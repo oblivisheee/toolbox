@@ -1,0 +1,36 @@
+[package]
+name = "toolbox"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = ["io", "crypto", "hash"]
+io = []
+hash = ["blake3", "hex", "sha3", "serde"]
+crypto = [
+    "aes-gcm",
+    "ring",
+    "rsa",
+    "x25519-dalek",
+    "rand",
+    "rand_core",
+    "zeroize",
+]
+
+[dependencies]
+aes-gcm = { version = "0.10.3", optional = true }
+blake3 = { version = "1.5.4", optional = true }
+ed25519-dalek = { version = "2.1.1", features = ["pem"] }
+hex = { version = "0.4.3", features = ["serde"], optional = true }
+p256 = "0.13.2"
+rand = { version = "0.8.5", optional = true }
+rand_core = { version = "0.6.4", optional = true }
+ring = { version = "0.17.8", optional = true }
+rsa = { version = "0.9.6", features = ["pem"], optional = true }
+serde = { version = "1.0.215", features = ["derive"], optional = true }
+sha3 = { version = "0.10.8", optional = true }
+x25519-dalek = { version = "2.0.1", features = [
+    "getrandom",
+    "static_secrets",
+], optional = true }
+zeroize = { version = "1.8.1", optional = true }
