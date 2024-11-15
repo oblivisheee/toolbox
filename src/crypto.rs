@@ -1,3 +1,4 @@
+use std::sync::{Arc, Mutex};
 pub mod aes {
     use aes_gcm::{
         aead::{Aead, AeadCore, KeyInit, OsRng},
@@ -42,13 +43,27 @@ pub mod aes {
         }
     }
 }
-pub fn generate_key() -> [u8; 32] {
-    let rng = ring::rand::SystemRandom::new();
-    let mut key = [0u8; 32];
-    ring::rand::SecureRandom::fill(&rng, &mut key).expect("RNG failure");
-    key
-}
 
+pub struct SecretKey {
+    key: Vec<u8>,
+}
+impl SecretKey {
+    pub fn gen() -> Arc<Mutex<Self>> {
+        let mut key = vec![0u8; 32];
+        let rng = ring::rand::SystemRandom::new();
+        ring::rand::SecureRandom::fill(&rng, &mut key).expect("RNG failure");
+
+        Arc::new(Mutex::new(Self { key }))
+    }
+    pub fn from_vec<T: AsRef<Vec<u8>>>(vec: T) -> Arc<Mutex<Self>> {
+        Arc::new(Mutex::new(Self {
+            key: vec.as_ref().to_owned(),
+        }))
+    }
+    pub fn get(&self) -> &[u8] {
+        &self.key
+    }
+}
 pub mod rsa {
     use rsa::{
         pkcs1::{DecodeRsaPrivateKey, EncodeRsaPrivateKey, EncodeRsaPublicKey},
