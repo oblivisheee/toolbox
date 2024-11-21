@@ -1,4 +1,4 @@
-mod crypto;
-mod hash;
+pub mod crypto;
+pub mod hash;
 #[cfg(feature = "io")]
-mod io;
+pub mod io;
