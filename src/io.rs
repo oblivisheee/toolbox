@@ -1,4 +1,4 @@
-fn input(prefix: &str) -> String {
+pub fn input(prefix: &str) -> String {
     use std::io::{self, Write};
     print!("{}", prefix);
     io::stdout().flush().unwrap();
